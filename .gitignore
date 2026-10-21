@@ -1,0 +1,15 @@
+# Downloaded at install time by setup.ps1
+lhm/
+nssm.exe
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+
+# Logs and local artifacts
+*.log
+stdout.log
+stderr.log
