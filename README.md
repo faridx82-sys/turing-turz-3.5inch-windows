@@ -23,7 +23,7 @@ The dashboard is rendered in landscape (480×320), sent over USB serial as RGB56
 - **Runs as a service** — starts at boot, no user logged in required.
 - **Auto-detects the display** by USB VID/PID and reconnects when it is unplugged.
 - **No vendor app needed** — the panel is driven directly over the serial protocol.
-- **CPU temperature** via LibreHardwareMonitor's sensor library (bundled automatically by the installer).
+- **CPU temperature** via LibreHardwareMonitor's sensor library, bundled in `lhm/` (no GUI or extra install needed).
 - **GPU temperature / VRAM** via `nvidia-smi`.
 - **Preview mode** renders a frame to PNG without touching the hardware.
 - Log rotation and a standalone test-pattern tool for troubleshooting.
@@ -53,7 +53,7 @@ The script:
 
 1. installs `pyserial`, `pillow` and `psutil`;
 2. downloads [NSSM](https://nssm.cc/) (service wrapper) into the project folder;
-3. downloads [LibreHardwareMonitor](https://github.com/LibreHardwareMonitor/LibreHardwareMonitor) and extracts its library into `lhm\`;
+3. uses the bundled [LibreHardwareMonitor](https://github.com/LibreHardwareMonitor/LibreHardwareMonitor) library in `lhm\` for CPU temperature (it re-downloads it only if the folder is missing);
 4. stops the vendor `UsbMonitor` app and disables its scheduled task (if present);
 5. registers and starts the `TuringDashboard` service as `LocalSystem`.
 
@@ -71,8 +71,7 @@ If you prefer to do it by hand:
 python -m pip install pyserial pillow psutil
 
 # NSSM: https://nssm.cc/download  (use win64\nssm.exe)
-# LibreHardwareMonitor: https://github.com/LibreHardwareMonitor/LibreHardwareMonitor/releases
-#   extract the zip into .\lhm\
+# LibreHardwareMonitor: the required DLLs are already in .\lhm\
 
 nssm install TuringDashboard "C:\Path\To\python.exe"
 nssm set TuringDashboard AppParameters '"C:\Path\To\turing-dashboard\monitor_win.py"'
@@ -195,7 +194,7 @@ setup.ps1               One-shot service installer
 uninstall.ps1           Removes the service and re-enables the vendor app
 tools/display_test.py   Standalone test pattern (hardware/protocol check)
 preview.png             Rendered dashboard preview
-lhm/                    LibreHardwareMonitor binaries (downloaded, git-ignored)
+lhm/                    Bundled LibreHardwareMonitor v0.9.6 library (MPL-2.0, see lhm/NOTICE.md)
 nssm.exe                Service wrapper (downloaded, git-ignored)
 ```
 
@@ -203,7 +202,7 @@ nssm.exe                Service wrapper (downloaded, git-ignored)
 
 - Original Linux project: [faridx82-sys/turing-turz-3.5inch](https://github.com/faridx82-sys/turing-turz-3.5inch)
 - Protocol reference: [mathoudebine/turing-smart-screen-python](https://github.com/mathoudebine/turing-smart-screen-python)
-- [LibreHardwareMonitor](https://github.com/LibreHardwareMonitor/LibreHardwareMonitor) for CPU sensors
+- [LibreHardwareMonitor](https://github.com/LibreHardwareMonitor/LibreHardwareMonitor) v0.9.6 for CPU sensors (bundled binaries, MPL-2.0)
 - [NSSM](https://nssm.cc/) for service wrapping
 
 Not affiliated with Turing or TURZX.
@@ -211,3 +210,7 @@ Not affiliated with Turing or TURZX.
 ## License
 
 GPL-3.0 — see [LICENSE](LICENSE).
+
+The bundled binaries in `lhm/` are third-party components distributed under
+their own licenses (LibreHardwareMonitor is MPL-2.0). See
+[`lhm/NOTICE.md`](lhm/NOTICE.md) for details and source links.
