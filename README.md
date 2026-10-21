@@ -177,14 +177,6 @@ Useful if you want to adapt this to another panel:
 - The official 3.5" panel does **not** answer the `HELLO` command (`0x45` × 6 or the newer `0xCA` packet), which is expected for Rev A hardware.
 - Native resolution is 320×480 portrait; the dashboard renders 480×320 landscape.
 
-## Reverting to the vendor app
-
-```powershell
-.\uninstall.ps1
-```
-
-This stops and removes the service and re-enables the vendor `UsbMonitor` scheduled task. Start the vendor app again if you want it to drive the panel.
-
 ## Project layout
 
 ```
